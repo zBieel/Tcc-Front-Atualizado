@@ -12,16 +12,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
-      nome,
+      nome, // Mantém 'nome' como está
       senha,
-      tipoUsuario: "Funcionario",
-      sobrenome: "null",
     };
-
+  
     try {
-      const response = await api.post("users/login", userData);
+      const response = await api.post("/academico/api/v1/login", userData); // Endpoint correto
       console.log('Response:', response.data);
-      
+  
       // Verifica se a resposta contém um token
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
@@ -31,10 +29,9 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      //alert('Ocorreu um erro ao tentar fazer login.'); // Feedback para o usuário
-      navigate('/home'); // Teste sem token 
+      alert('Ocorreu um erro ao tentar fazer login.'); // Feedback para o usuário
     }
-  };
+  };  
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
