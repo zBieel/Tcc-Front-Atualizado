@@ -12,29 +12,25 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
-      nome, // Mantém 'nome' como está
+      nome, // mantém 'nome' como está
       senha,
     };
   
     try {
-      const response = await api.post("/academico/api/v1/login", userData); // Endpoint correto
+      const response = await api.post("/academico/api/v1/login", userData);
       console.log('Response:', response.data);
-  
-      // Verifica se a resposta contém um token
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/home'); // Redireciona para a página Home
-      } else {
-        alert('Login falhou. Verifique suas credenciais.'); // Feedback para o usuário
-      }
+
+      // Armazena o usuário no localStorage
+      localStorage.setItem('user', JSON.stringify(response.data));
+      navigate('/home'); // Redireciona para a página Home
     } catch (error) {
       console.error('Error:', error);
-      alert('Ocorreu um erro ao tentar fazer login.'); // Feedback para o usuário
+      alert('Login falhou. Verifique suas credenciais.'); // Feedback para o usuário
     }
   };  
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   useEffect(() => {
