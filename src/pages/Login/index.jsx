@@ -5,29 +5,29 @@ import { useNavigate } from 'react-router-dom';
 import api from "../../services/api";
 
 const Login = () => {
-  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
   const [theme, setTheme] = useState('light');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      nome, // mantém 'nome' como está
-      senha,
-    };
   
     try {
-      const response = await api.post("/academico/api/v1/login", userData);
-      console.log('Response:', response.data);
+      const token = await login(email, senha);
 
-      // Armazena o usuário no localStorage
-      localStorage.setItem('user', JSON.stringify(response.data));
-      navigate('/home'); // Redireciona para a página Home
+      const decodedToken = jwtDecode(token);
+      console.log('Token Decodificado:', decodedToken)
+      const { idUser, nomeUser, tipoUsuario } = decodedToken
+
+      console.log('Id:', idUser);
+      console.log('Nome:', nomeUser);
+      console.log('Tipo de Usuário:', tipoUsuario);
+
+      navigate('/home');
     } catch (error) {
-      console.error('Error:', error);
-      alert('Login falhou. Verifique suas credenciais.'); // Feedback para o usuário
+      console.error(error);
+      setError('Login falhou. Verifique suas credenciais.');
     }
   };  
 
@@ -47,10 +47,10 @@ const Login = () => {
         </div>
         <div className="form-group">
           <input
-            type="text"
-            placeholder="Usuário"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="form-group">
