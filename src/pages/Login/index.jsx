@@ -1,4 +1,5 @@
 import './login.css';
+import { login } from '../../services/authService';
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import api from "../../services/api";
@@ -6,6 +7,7 @@ import api from "../../services/api";
 const Login = () => {
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
+  const [error, setError] = useState('');
   const [theme, setTheme] = useState('light');
   const navigate = useNavigate();
 
